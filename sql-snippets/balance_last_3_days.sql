@@ -26,7 +26,6 @@ Select b3.account_number,
     i.balance_before_3_days as balance_before_3_days_qa,
     b3.balance_before_3_days balance_before_3_days,
     IIF(i.balance_before_3_days=b3.balance_before_3_days,'EQUAL','NOT EQUAL') as balance_before_3_days_status
-into QA.qa_fc_balance_last_3_days
 from fc_facts.fc_balance_last_3_days as b3
 inner join (Select account_number, tran_date, lcy_amount as balance, 
             LAG(lcy_amount,1) over(partition by account_number order by tran_date) as balance_before_1_day,
@@ -86,4 +85,4 @@ GO
 Exec suraj.sp_balanceLast3DaysStatus;
 
 -- check
-select * from QA.qa_fc_balance_last_3_days_test order by account_number, tran_date;
+select * from QA.qa_fc_balance_last_3_days order by account_number, tran_date;
